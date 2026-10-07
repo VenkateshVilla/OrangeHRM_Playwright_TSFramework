@@ -1,0 +1,20 @@
+node_modules/
+
+# Playwright output
+test-results/
+playwright-report/
+playwright/.cache/
+
+# Allure output
+allure-results/
+allure-report/
+
+# Local environment files
+.env
+.env.*
+!.env.example
+
+# Logs and OS files
+*.log
+.DS_Store
+Thumbs.db
