@@ -91,7 +91,7 @@ export class AdminPage extends BasePage {
     }
 
     async verifyAdminPageLoaded(): Promise<void> {
-        await expect(this.adminHeader).toContainText('Admin');
+        await expect(this.adminHeader).toContainText('RubeshKumar');
     }
 
     // --------------------------

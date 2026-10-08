@@ -1,36 +1,66 @@
 // src/utils/EnvManager.ts
 
-import * as dotenv from 'dotenv';
-import { CryptoUtil } from './CryptoUtil';
+import dotenv from 'dotenv';
+import path from 'path';
 
-dotenv.config();
+const environment =
+    process.env.TEST_ENV || 'qa';
+
+dotenv.config({
+    path: path.resolve(
+        process.cwd(),
+        `env/.env.${environment}`
+    )
+});
 
 export class EnvManager {
 
-    static getBaseUrl(): string {
-        return process.env.BASE_URL || '';
-    }
-
-    static getUsername(): string {
-        console.log('Encrypted Username:', "Admin");
-        //console.log('Decrypted Username:', CryptoUtil.decrypt(process.env.USERNAME || ''));
-        console.log('Decrypted Username:', CryptoUtil.decrypt('Admin'));
-        return CryptoUtil.decrypt(
-            process.env.USERNAME || ''
-        );
-    }
-
-    static getPassword(): string {
-        console.log('Encrypted Password:', process.env.PASSWORD);
-        console.log('Decrypted Password:', CryptoUtil.decrypt(process.env.PASSWORD || ''));
-        return CryptoUtil.decrypt(
-            process.env.PASSWORD || ''
-        );
-    }
-
-    static getEnv(
-        key: string
-    ): string {
+    /**
+     * Generic Environment Variable Reader
+     */
+    static get(key: string): string {
         return process.env[key] || '';
+    }
+
+    /**
+     * Base URL
+     */
+    static getBaseUrl(): string {
+        return this.get('BASE_URL');
+    }
+
+    /**
+     * Username
+     */
+    static getUsername(): string {
+        return this.get('USERNAME_ENC');
+    }
+
+    /**
+     * Password
+     */
+    static getPassword(): string {
+        return this.get('PASSWORD');
+    }
+
+    /**
+     * Browser
+     */
+    static getBrowser(): string {
+        return this.get('BROWSER');
+    }
+
+    /**
+     * Headless Mode
+     */
+    static isHeadless(): boolean {
+        return this.get('HEADLESS') === 'true';
+    }
+
+    /**
+     * Current Environment
+     */
+    static getEnvironment(): string {
+        return this.get('ENV');
     }
 }

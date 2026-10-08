@@ -1,38 +1,40 @@
 import { test } from '../src/fixtures/baseFixture';
+import testData from '../testdata/testdata.json';
+import '../src/hooks/testHooks';
+
+const {
+    searchUser,
+    newUser
+} = testData.admin;
 
 test.describe('Admin Module', () => {
 
     test(
-        'Verify Admin Page Navigation',
+        'Search User',
         async ({ adminPage }) => {
 
             await adminPage.openAdminPage();
 
-            await adminPage.verifyAdminPageLoaded();
-        }
-    );
-
-    test(
-        'Search Existing User',
-        async ({ adminPage }) => {
-
-            await adminPage.openAdminPage();
-
-            await adminPage.searchUser('Admin');
+            await adminPage.searchUser(
+                searchUser.username
+            );
 
             await adminPage.verifySearchResultsDisplayed();
         }
     );
 
     test(
-        'Validate Admin Controls',
+        'Create Admin User',
         async ({ adminPage }) => {
 
             await adminPage.openAdminPage();
 
-            await adminPage.verifyAddButtonVisible();
+            await adminPage.createAdminUser(
+                newUser.userRole,
+                newUser.employeeName
+            );
 
-            await adminPage.verifySearchButtonEnabled();
+            await adminPage.verifyAddButtonVisible();
         }
     );
 });

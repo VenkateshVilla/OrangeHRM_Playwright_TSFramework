@@ -6,5 +6,22 @@
   "employee": {
     "firstName": "John",
     "lastName": "Doe"
+  },
+   "admin": {
+    "searchUser": {
+      "username": "RubeshKumar"
+    },
+    "newUser": {
+      "userRole": "Admin",
+      "employeeName": "manda akash",
+      "status": "Enabled"
+    }
+  },
+  "pim": {
+    "employee": {
+      "firstName": "John",
+      "middleName": "M",
+      "lastName": "Doe"
+    }
   }
 }

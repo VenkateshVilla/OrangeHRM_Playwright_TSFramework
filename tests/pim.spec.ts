@@ -1,5 +1,6 @@
 import { test } from '../src/fixtures/baseFixture';
 import testData from '../testdata/testdata.json';
+import '../src/hooks/testHooks';
 
 test.describe('PIM Module', () => {
 

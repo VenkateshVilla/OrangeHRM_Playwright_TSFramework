@@ -1,4 +1,5 @@
 import { test } from '../src/fixtures/baseFixture';
+import '../src/hooks/testHooks';
 
 test.describe('Dashboard Module', () => {
 

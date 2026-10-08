@@ -40,6 +40,9 @@ A TypeScript end-to-end test framework for OrangeHRM, built with Playwright Test
 ├── playwright.config.ts         # Test, browser, reporter, and artifact settings
 └── README.md
 ```
+## Cryto util installation
+npm install crypto-js
+npm install --save-dev @types/crypto-js
 
 ## Setup
 

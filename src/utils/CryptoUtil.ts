@@ -1,13 +1,32 @@
 // src/utils/CryptoUtil.ts
 
+import CryptoJS from 'crypto-js';
+
 export class CryptoUtil {
 
-    static encrypt(value: string): string {
-        return Buffer.from(value).toString('base64');
+    static encrypt(
+        value: string,
+        secretKey: string
+    ): string {
+
+        return CryptoJS.AES.encrypt(
+            value,
+            secretKey
+        ).toString();
     }
 
-    static decrypt(value: string): string {
-        return Buffer.from(value, 'base64').toString('utf-8');
-    }
+    static decrypt(
+        encryptedValue: string,
+        secretKey: string
+    ): string {
 
+        const bytes = CryptoJS.AES.decrypt(
+            encryptedValue,
+            secretKey
+        );
+
+        return bytes.toString(
+            CryptoJS.enc.Utf8
+        );
+    }
 }
