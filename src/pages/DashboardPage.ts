@@ -34,22 +34,26 @@ export class DashboardPage extends BasePage {
         super(page);
 
         // Header
-        this.dashboardHeader = page.locator(
-            '//h6[text()="Dashboard"]'
-        );
+        this.dashboardHeader =
+            page.getByRole('heading', {
+                name: 'Dashboard'
+            });
 
         // Left Menu
-        this.adminMenu = page.locator(
-            '//span[text()="Admin"]'
-        );
+        this.adminMenu =
+            page.getByRole('link', {
+                name: 'Admin'
+            });
 
-        this.pimMenu = page.locator(
-            '//span[text()="PIM"]'
-        );
+        this.pimMenu =
+            page.getByRole('link', {
+                name: 'PIM'
+            });
 
-        this.leaveMenu = page.locator(
-            '//span[text()="Leave"]'
-        );
+        this.leaveMenu =
+            page.getByRole('link', {
+                name: 'Leave'
+            });
 
         this.timeMenu = page.locator(
             '//span[text()="Time"]'
@@ -71,9 +75,10 @@ export class DashboardPage extends BasePage {
             '//span[text()="Dashboard"]'
         );
 
-        this.buzzMenu = page.locator(
-            '//span[text()="Buzz"]'
-        );
+        this.buzzMenu =
+            page.getByRole('link', {
+                name: 'Buzz'
+            });
 
         // User Actions
         this.profileDropdown = page.locator(

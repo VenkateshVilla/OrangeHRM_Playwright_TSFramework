@@ -1,25 +1,23 @@
 {
-    "name":"orangehrm-framework",
-    "scripts":
-    {
-        "test":"playwright test",
-        "allure:generate":"allure generate allure-results -o allure-report --clean",
-        "allure:open":"allure open allure-report",
-        "test:qa": "cross-env TEST_ENV=qa playwright test",
-        "test:uat": "cross-env TEST_ENV=uat playwright test",
-        "test:prod": "cross-env TEST_ENV=prod playwright test"
+    "name": "orangehrm-framework",
+    "scripts": {
+        "test": "npx playwright test",
+        "allure:generate": "allure generate allure-results -o allure-report --clean",
+        "allure:open": "allure open allure-report",
+        "test:qa": "cross-env TEST_ENV=qa npx playwright test",
+        "test:uat": "cross-env TEST_ENV=uat npx playwright test",
+        "test:prod": "cross-env TEST_ENV=prod npx playwright test"
     },
-    "devDependencies":
-    {
-        "@playwright/test":"^1.55.0",
-        "@types/crypto-js":"^4.2.2",
-        "@types/node":"^26.6.4",
-        "allure-playwright":"^3.0.0",
-        "dotenv":"^16.0.0",
-        "typescript":"^5.0.0"
+    "devDependencies": {
+        "@playwright/test": "^1.55.0",
+        "@types/crypto-js": "^4.2.2",
+        "@types/node": "^26.6.4",
+        "allure-playwright": "^3.0.0",
+        "cross-env": "^10.1.0",
+        "dotenv": "^16.0.0",
+        "typescript": "^5.0.0"
     },
-    "dependencies":
-    {
-        "crypto-js":"^4.2.0"
+    "dependencies": {
+        "crypto-js": "^4.2.0"
     }
 }

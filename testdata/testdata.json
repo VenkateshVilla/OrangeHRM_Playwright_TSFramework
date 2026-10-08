@@ -9,11 +9,11 @@
   },
    "admin": {
     "searchUser": {
-      "username": "RubeshKumar"
+      "username": "Ahmed@123"
     },
     "newUser": {
       "userRole": "Admin",
-      "employeeName": "manda akash",
+      "employeeName": "Alex J Morgan",
       "status": "Enabled"
     }
   },

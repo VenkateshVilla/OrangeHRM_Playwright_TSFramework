@@ -27,29 +27,28 @@ export class LoginPage extends BasePage {
     constructor(page: Page) {
         super(page);
 
-        this.usernameTextbox = page.locator(
-            'input[name="username"]'
-        );
+        this.usernameTextbox =
+            page.getByRole('textbox').first();
 
-        this.passwordTextbox = page.locator(
-            'input[name="password"]'
-        );
+        this.passwordTextbox =
+            page.getByRole('textbox').nth(1);
 
-        this.loginButton = page.locator(
-            'button[type="submit"]'
-        );
+        this.loginButton =
+            page.getByRole('button', {
+                name: 'Login'
+            });
 
-        this.forgotPasswordLink = page.locator(
-            '.orangehrm-login-forgot'
-        );
+        this.forgotPasswordLink =
+            page.getByText('Forgot your password?');
 
         this.orangeHRMLogo = page.locator(
             '.orangehrm-login-branding'
         );
 
-        this.dashboardHeader = page.locator(
-            '//h6[text()="Dashboard"]'
-        );
+        this.dashboardHeader =
+            page.getByRole('heading', {
+                name: 'Dashboard'
+            });
 
         this.invalidCredentialError = page.locator(
             '.oxd-alert-content-text'

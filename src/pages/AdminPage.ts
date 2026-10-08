@@ -34,14 +34,16 @@ export class AdminPage extends BasePage {
         this.adminMenu = page.locator('a[href*="admin/viewAdminModule"]');
 
         // Header
-        this.adminHeader = page.locator(
-            "//h6[contains(@class,'oxd-topbar-header-breadcrumb-module')]"
-        );
+         this.adminHeader =
+            page.getByRole('heading', {
+                name: 'Admin'
+            });
 
         // Search
-        this.usernameTextBox = page.locator(
-            "(//input[contains(@class,'oxd-input')])[2]"
-        );
+         this.usernameTextBox =
+            page.locator(
+                'input[class*="oxd-input"]'
+            ).nth(1);
 
         this.userRoleDropdown = page.locator(
             "(//div[contains(@class,'oxd-select-text')])[1]"
@@ -91,7 +93,7 @@ export class AdminPage extends BasePage {
     }
 
     async verifyAdminPageLoaded(): Promise<void> {
-        await expect(this.adminHeader).toContainText('RubeshKumar');
+        await expect(this.adminHeader).toContainText('Ahmed@123');
     }
 
     // --------------------------

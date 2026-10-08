@@ -40,7 +40,7 @@ A TypeScript end-to-end test framework for OrangeHRM, built with Playwright Test
 ├── playwright.config.ts         # Test, browser, reporter, and artifact settings
 └── README.md
 ```
-## Cryto util installation
+## Crpyto util installation
 npm install crypto-js
 npm install --save-dev @types/crypto-js
 
@@ -89,3 +89,5 @@ Generate and open the Allure report:
 npm run allure:generate
 npm run allure:open
 ```
+• Ensure you have cross-env installed as a devDependency (npm i -D cross-env) so the environment variables work across Windows, Mac, and Linux.
+• To run your QA tests in the terminal, you will use: npm run test:qa

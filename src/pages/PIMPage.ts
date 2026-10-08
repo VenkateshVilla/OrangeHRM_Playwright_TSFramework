@@ -57,13 +57,15 @@ export class PIMPage extends BasePage {
             '//span[text()="PIM"]'
         );
 
-        this.pimHeader = page.locator(
-            '//h6[contains(@class,"oxd-topbar-header-breadcrumb-module")]'
-        );
+        this.pimHeader =
+            page.getByRole('heading', {
+                name: 'PIM'
+            });
 
-        this.employeeNameTextbox = page.locator(
-            '(//input[contains(@class,"oxd-input")])[2]'
-        );
+        this.employeeNameTextbox =
+            page.locator(
+                'input[placeholder="Type for hints..."]'
+            );
 
         this.employeeIdTextbox = page.locator(
             '(//input[contains(@class,"oxd-input")])[3]'
@@ -81,29 +83,28 @@ export class PIMPage extends BasePage {
             name: 'Add'
         });
 
-        this.firstNameTextbox = page.locator(
-            'input[name="firstName"]'
-        );
+        this.firstNameTextbox =
+            page.getByPlaceholder('First Name');
 
-        this.middleNameTextbox = page.locator(
-            'input[name="middleName"]'
-        );
+        this.middleNameTextbox =
+            page.getByPlaceholder('Middle Name');
 
-        this.lastNameTextbox = page.locator(
-            'input[name="lastName"]'
-        );
+        this.lastNameTextbox =
+            page.getByPlaceholder('Last Name');
 
         this.employeeIdField = page.locator(
             '(//input[contains(@class,"oxd-input")])[5]'
         );
 
-        this.saveButton = page.getByRole('button', {
-            name: 'Save'
-        });
+        this.saveButton =
+            page.getByRole('button', {
+                name: 'Save'
+            });
 
-        this.personalDetailsHeader = page.locator(
-            '//h6[text()="Personal Details"]'
-        );
+        this.personalDetailsHeader =
+            page.getByRole('heading', {
+                name: 'Personal Details'
+            });
 
         this.recordsFoundLabel = page.locator(
             '.orangehrm-horizontal-padding'
