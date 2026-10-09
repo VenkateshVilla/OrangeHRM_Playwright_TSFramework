@@ -77,6 +77,20 @@ Run one spec file:
 npx playwright test tests/login.spec.ts
 ```
 
+## GitHub Actions
+
+The `Admin Playwright Tests` workflow runs `tests/admin.spec.ts` on a
+GitHub-hosted Windows runner for pushes and pull requests. Configure these
+repository secrets before running the workflow:
+
+- `BASE_URL`: URL of the OrangeHRM instance
+- `USERNAME_ENC`: Base64-encoded OrangeHRM username
+- `PASSWORD`: OrangeHRM password
+
+The workflow runs Chromium headlessly; local runs remain headed by default.
+To run the tests only when requested, select `Admin Playwright Tests (Manual)`
+from the Actions tab and choose **Run workflow**.
+
 Open the Playwright HTML report after a test run:
 
 ```bash

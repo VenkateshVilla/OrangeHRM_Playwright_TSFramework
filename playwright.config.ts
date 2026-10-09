@@ -12,7 +12,7 @@ export default defineConfig({
     ],
 
     use: {
-        headless: false,
+        headless: process.env.CI === 'true',
         screenshot: 'only-on-failure',
         trace: 'on-first-retry',
         video: 'retain-on-failure'
