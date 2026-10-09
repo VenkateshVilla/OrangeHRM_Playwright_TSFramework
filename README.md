@@ -91,17 +91,28 @@ The workflow runs Chromium headlessly; local runs remain headed by default.
 To run the tests only when requested, select `Admin Playwright Tests (Manual)`
 from the Actions tab and choose **Run workflow**.
 
-Open the Playwright HTML report after a test run:
+### Open reports from GitHub Actions
 
-```bash
-npx playwright show-report
-```
+After a workflow finishes, open the run in the Actions tab and download the
+artifact you need from the run's **Artifacts** section. The artifacts are
+retained for 14 days.
 
-Generate and open the Allure report:
+- Download and extract `playwright-html-report`, then open
+  `playwright-report/index.html` in a browser.
+- Download and extract `allure-results` into the repository root. With the
+  Allure CLI installed locally, generate and open the HTML report:
+
+npm.cmd install --save-dev allure-commandline
 
 ```bash
 npm run allure:generate
 npm run allure:open
+```
+
+For a local Playwright run, open the HTML report with:
+
+```bash
+npx playwright show-report
 ```
 • Ensure you have cross-env installed as a devDependency (npm i -D cross-env) so the environment variables work across Windows, Mac, and Linux.
 • To run your QA tests in the terminal, you will use: npm run test:qa
