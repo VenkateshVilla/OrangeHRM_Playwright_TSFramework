@@ -38,8 +38,12 @@ A TypeScript end-to-end test framework for OrangeHRM, built with Playwright Test
 ├── .gitignore
 ├── package.json
 ├── playwright.config.ts         # Test, browser, reporter, and artifact settings
+├── OrangeHRM_Test_Cases.md      # Module-wise OrangeHRM test case list
 └── README.md
 ```
+
+See [OrangeHRM_Test_Cases.md](OrangeHRM_Test_Cases.md) for the module-by-module test scenarios explored from the OrangeHRM demo site.
+
 ## Crpyto util installation
 npm install crypto-js
 npm install --save-dev @types/crypto-js
