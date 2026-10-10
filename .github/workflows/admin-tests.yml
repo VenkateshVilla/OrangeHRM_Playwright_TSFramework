@@ -32,12 +32,25 @@ jobs:
       - name: Run admin tests
         run: npx playwright test tests/admin.spec.ts
 
+      - name: Generate Allure HTML report
+        if: always() && hashFiles('allure-results/**') != ''
+        run: npm run allure:generate
+
       - name: Upload Playwright HTML report
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: playwright-html-report
           path: playwright-report/
+          if-no-files-found: ignore
+          retention-days: 14
+
+      - name: Upload Allure HTML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-html-report
+          path: allure-report/
           if-no-files-found: ignore
           retention-days: 14
 
