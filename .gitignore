@@ -6,6 +6,7 @@ playwright-report/
 playwright/.cache/
 
 # Allure output
+allure-html-report/
 allure-results/
 allure-report/
 
