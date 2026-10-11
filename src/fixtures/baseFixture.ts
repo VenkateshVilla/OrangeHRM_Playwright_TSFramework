@@ -6,6 +6,7 @@ import { LoginPage } from '../pages/LoginPage';
 import { DashboardPage } from '../pages/DashboardPage';
 import { AdminPage } from '../pages/AdminPage';
 import { PIMPage } from '../pages/PIMPage';
+import { BuzzPage } from '../pages/BuzzPage';
 
 import { EnvManager } from '../utils/EnvManager';
 
@@ -14,6 +15,7 @@ type PageFixtures = {
   dashboardPage: DashboardPage;
   adminPage: AdminPage;
   pimPage: PIMPage;
+  buzzPage: BuzzPage;
 };
 
 export const test = base.extend<PageFixtures>({
@@ -35,6 +37,11 @@ export const test = base.extend<PageFixtures>({
   pimPage: async ({ page }, use) => {
     const pimPage = new PIMPage(page);
     await use(pimPage);
+  },
+
+  buzzPage: async ({ page }, use) => {
+    const buzzPage = new BuzzPage(page);
+    await use(buzzPage);
   }
 });
 
