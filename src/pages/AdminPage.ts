@@ -21,6 +21,7 @@ export class AdminPage extends BasePage {
 
     // Actions
     readonly addButton: Locator;
+    readonly saveButton: Locator;
     readonly deleteButton: Locator;
 
     // Results
@@ -30,86 +31,51 @@ export class AdminPage extends BasePage {
     constructor(page: Page) {
         super(page);
 
-        // Menu
         this.adminMenu = page.locator('a[href*="admin/viewAdminModule"]');
 
-        // Header
-         this.adminHeader =
-            page.getByRole('heading', {
-                name: 'Admin'
-            });
-
-        // Search
-         this.usernameTextBox =
-            page.locator(
-                'input[class*="oxd-input"]'
-            ).nth(1);
-
-        this.userRoleDropdown = page.locator(
-            "(//div[contains(@class,'oxd-select-text')])[1]"
-        );
-
-        this.employeeNameTextBox = page.locator(
-            'input[placeholder="Type for hints..."]'
-        );
-
-        this.statusDropdown = page.locator(
-            "(//div[contains(@class,'oxd-select-text')])[2]"
-        );
-
-        this.searchButton = page.getByRole('button', {
-            name: 'Search'
+        this.adminHeader = page.getByRole('heading', {
+            name: 'Admin'
         });
 
-        this.resetButton = page.getByRole('button', {
-            name: 'Reset'
-        });
+        this.usernameTextBox = page.locator('.oxd-input').nth(1);
 
-        // Actions
-        this.addButton = page.getByRole('button', {
-            name: 'Add'
-        });
+        this.userRoleDropdown = page.locator('(//div[contains(@class, "oxd-select-text")])[1]');
 
-        this.deleteButton = page.locator(
-            "button i.bi-trash"
-        );
+        this.employeeNameTextBox = page.locator('input[placeholder="Type for hints..."]');
 
-        // Results
-        this.resultTable = page.locator(
-            '.oxd-table-body'
-        );
+        this.statusDropdown = page.locator('(//div[contains(@class, "oxd-select-text")])[2]');
 
-        this.recordsFoundLabel = page.locator(
-            '.orangehrm-horizontal-padding'
-        );
+        this.searchButton = page.getByRole('button', { name: 'Search' });
+        this.resetButton = page.getByRole('button', { name: 'Reset' });
+
+        this.addButton = page.getByRole('button', { name: 'Add' });
+        this.saveButton = page.getByRole('button', { name: 'Save' });
+        this.deleteButton = page.locator('button i.bi-trash');
+
+        this.resultTable = page.locator('.oxd-table-body');
+        this.recordsFoundLabel = page.locator('.orangehrm-horizontal-padding');
     }
 
-    // --------------------------
-    // Navigation Methods
-    // --------------------------
-
     async openAdminPage(): Promise<void> {
-        await this.adminMenu.click();
+        await this.click(this.adminMenu);
+        await expect(this.adminHeader).toBeVisible();
     }
 
     async verifyAdminPageLoaded(): Promise<void> {
-        await expect(this.adminHeader).toContainText('Ahmed@123');
+        await expect(this.adminHeader).toBeVisible();
+        await expect(this.adminHeader).toContainText('Admin');
     }
 
-    // --------------------------
-    // Search User Methods
-    // --------------------------
-
     async enterUsername(username: string): Promise<void> {
-        await this.usernameTextBox.fill(username);
+        await this.fill(this.usernameTextBox, username);
     }
 
     async clickSearch(): Promise<void> {
-        await this.searchButton.click();
+        await this.click(this.searchButton);
     }
 
     async clickReset(): Promise<void> {
-        await this.resetButton.click();
+        await this.click(this.resetButton);
     }
 
     async searchUser(username: string): Promise<void> {
@@ -121,87 +87,73 @@ export class AdminPage extends BasePage {
         await expect(this.resultTable).toBeVisible();
     }
 
-    // --------------------------
-    // Add User Methods
-    // --------------------------
+    async verifySearchResultsContainUser(username: string): Promise<void> {
+        await this.verifySearchResultsDisplayed();
+        await expect(this.resultTable).toContainText(username);
+    }
+
+    async verifyNoSearchResultsDisplayed(): Promise<void> {
+        await expect(this.recordsFoundLabel).toContainText(/No Records Found|No records found/i);
+    }
 
     async clickAddUser(): Promise<void> {
-        await this.addButton.click();
+        await this.click(this.addButton);
+    }
+
+    async clickSaveUser(): Promise<void> {
+        await this.click(this.saveButton);
     }
 
     async selectUserRole(role: string): Promise<void> {
+        await this.click(this.userRoleDropdown);
 
-        await this.userRoleDropdown.click();
-
-        await this.page.locator(
-            `//span[text()='${role}']`
-        ).click();
+        const option = this.page.locator('.oxd-select-dropdown').getByText(role, { exact: true }).last();
+        await expect(option).toBeVisible();
+        await option.click();
     }
 
-    async enterEmployeeName(
-        employeeName: string
-    ): Promise<void> {
+    async enterEmployeeName(employeeName: string): Promise<void> {
+        await this.fill(this.employeeNameTextBox, employeeName);
 
-        await this.employeeNameTextBox.fill(employeeName);
-
-        await this.page.waitForTimeout(2000);
-
-        //await this.page.keyboard.arrowDown();
-        //await this.page.keyboard.enter();
-        await this.employeeNameTextBox.press('ArrowDown');
-        await this.employeeNameTextBox.press('Enter');
+        const suggestion = this.page.locator('.oxd-autocomplete-option').getByText(employeeName, { exact: false }).first();
+        await expect(suggestion).toBeVisible();
+        await suggestion.click();
     }
 
-    async selectStatus(
-        status: string
-    ): Promise<void> {
+    async selectStatus(status: string): Promise<void> {
+        await this.click(this.statusDropdown);
 
-        await this.statusDropdown.click();
-
-        await this.page.locator(
-            `//span[text()='${status}']`
-        ).click();
+        const option = this.page.locator('.oxd-select-dropdown').getByText(status, { exact: true }).last();
+        await expect(option).toBeVisible();
+        await option.click();
     }
 
-    async createAdminUser(
-        role: string,
-        employeeName: string
-    ): Promise<void> {
-
+    async createAdminUser(role: string, employeeName: string): Promise<void> {
         await this.clickAddUser();
-
         await this.selectUserRole(role);
-
-        await this.enterEmployeeName(
-            employeeName
-        );
+        await this.enterEmployeeName(employeeName);
+        await this.clickSaveUser();
     }
 
-    // --------------------------
-    // Validation Methods
-    // --------------------------
+    async verifyUserCreated(employeeName: string): Promise<void> {
+        await expect(this.page.locator('.oxd-toast')).toContainText(/success|saved/i);
+        await this.resultTable.waitFor({ state: 'visible' });
+        await expect(this.resultTable).toContainText(employeeName);
+    }
 
     async verifyRecordsFound(): Promise<void> {
-        await expect(
-            this.recordsFoundLabel
-        ).toBeVisible();
+        await expect(this.recordsFoundLabel).toBeVisible();
     }
 
     async verifyAdminMenuVisible(): Promise<void> {
-        await expect(
-            this.adminMenu
-        ).toBeVisible();
+        await expect(this.adminMenu).toBeVisible();
     }
 
     async verifySearchButtonEnabled(): Promise<void> {
-        await expect(
-            this.searchButton
-        ).toBeEnabled();
+        await expect(this.searchButton).toBeEnabled();
     }
 
     async verifyAddButtonVisible(): Promise<void> {
-        await expect(
-            this.addButton
-        ).toBeVisible();
+        await expect(this.addButton).toBeVisible();
     }
 }

@@ -1,4 +1,4 @@
-import { test } from '../src/fixtures/baseFixture';
+import { expect, test } from '../src/fixtures/baseFixture';
 import testData from '../testdata/testdata.json';
 import '../src/hooks/testHooks';
 
@@ -9,32 +9,30 @@ const {
 
 test.describe('Admin Module', () => {
 
-    test(
-        'Search User',
-        async ({ adminPage }) => {
+    test.beforeEach(async ({ adminPage }) => {
+        await adminPage.openAdminPage();
+        await adminPage.verifyAdminPageLoaded();
+    });
 
-            await adminPage.openAdminPage();
+    test('Search User', async ({ adminPage }) => {
+        await adminPage.searchUser(searchUser.username);
+        await adminPage.verifySearchResultsContainUser(searchUser.username);
+    });
 
-            await adminPage.searchUser(
-                searchUser.username
-            );
+    test('Search User with no matching result', async ({ adminPage }) => {
+        const missingUsername = 'definitely_not_a_user_12345';
 
-            await adminPage.verifySearchResultsDisplayed();
-        }
-    );
+        await adminPage.searchUser(missingUsername);
+        await adminPage.verifyNoSearchResultsDisplayed();
+    });
 
-    test(
-        'Create Admin User',
-        async ({ adminPage }) => {
+    test('Create Admin User', async ({ adminPage }) => {
+        await adminPage.createAdminUser(
+            newUser.userRole,
+            newUser.employeeName
+        );
 
-            await adminPage.openAdminPage();
-
-            await adminPage.createAdminUser(
-                newUser.userRole,
-                newUser.employeeName
-            );
-
-            await adminPage.verifyAddButtonVisible();
-        }
-    );
+        await adminPage.verifyUserCreated(newUser.employeeName);
+        await expect(adminPage.addButton).toBeVisible();
+    });
 });
