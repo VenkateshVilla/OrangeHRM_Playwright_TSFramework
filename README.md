@@ -103,15 +103,19 @@ retained for 14 days.
 
 - Download and extract `playwright-html-report`, then open
   `playwright-report/index.html` in a browser.
-- Download and extract `allure-results` into the repository root. With the
-  Allure CLI installed locally, generate and open the HTML report:
-
-npm.cmd install --save-dev allure-commandline
+- To regenerate the Allure report locally, create an `allure-results` folder
+  in the repository root and extract the contents of the `allure-results`
+  artifact into it. Confirm it contains `*-result.json` files, then run:
 
 ```bash
 npm run allure:generate
 npm run allure:open
 ```
+
+- Alternatively, extract the contents of `allure-html-report` into an
+  `allure-report` folder in the repository root and run `npm run allure:open`.
+  Do not run `allure:generate` after downloading this HTML report; that
+  command reads the raw `allure-results` folder, not the generated report.
 
 For a local Playwright run, open the HTML report with:
 
