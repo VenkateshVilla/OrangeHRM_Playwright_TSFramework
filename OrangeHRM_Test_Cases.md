@@ -23,6 +23,8 @@ TC_ADMIN_009: Delete a user record
 TC_ADMIN_010: Search user by username
 TC_ADMIN_011: Verify validation for empty fields while adding a user
 TC_ADMIN_012: Verify role-based access permissions
+TC_ADMIN_013 [Negative]: Attempt to create a user with a password that violates the password policy; verify the user is not saved and a validation message is shown
+TC_ADMIN_014 [Negative]: Search for a username that does not exist; verify no unrelated users are shown and the empty-results state is displayed
 
 ### 2. PIM Module
 
@@ -41,6 +43,8 @@ TC_PIM_012: Add education details
 TC_PIM_013: Delete employee record
 TC_PIM_014: Verify employee status change
 TC_PIM_015: Validate duplicate employee records
+TC_PIM_016 [Negative]: Search for an employee ID that does not exist; verify no employee record is returned
+TC_PIM_017 [Negative]: Upload an unsupported or oversized profile image; verify the upload is rejected and the existing image is retained
 
 ### 3. Leave Module
 
@@ -56,6 +60,8 @@ TC_LEAVE_009: Cancel pending leave request
 TC_LEAVE_010: Validate required field check on leave form
 TC_LEAVE_011: Verify holiday calendar display
 TC_LEAVE_012: Verify leave history for past dates
+TC_LEAVE_013 [Negative]: Apply for leave with an end date earlier than the start date; verify submission is blocked with a date-range validation message
+TC_LEAVE_014 [Negative]: Apply for leave when the employee has insufficient balance; verify the request is rejected or clearly marked as exceeding the balance
 
 ### 4. Time Module
 
@@ -71,6 +77,8 @@ TC_TIME_009: Review time summary for the week
 TC_TIME_010: Validate time-sheet date range logic
 TC_TIME_011: Check project-based time tracking
 TC_TIME_012: Verify report generation for timesheets
+TC_TIME_013 [Negative]: Enter negative hours or a value beyond the allowed daily limit; verify the entry cannot be saved
+TC_TIME_014 [Negative]: Submit a timesheet with no project or activity selected; verify the missing required selection is reported and submission is blocked
 
 ### 5. Recruitment Module
 
@@ -86,6 +94,8 @@ TC_RECRUIT_009: Hire candidate
 TC_RECRUIT_010: Validate job vacancy listing
 TC_RECRUIT_011: Add new vacancy
 TC_RECRUIT_012: Delete vacancy
+TC_RECRUIT_013 [Negative]: Add a candidate with an invalid email address; verify validation is shown and the candidate is not saved
+TC_RECRUIT_014 [Negative]: Add a candidate using an email address already registered for the same vacancy; verify duplicate application handling prevents an unintended duplicate
 
 ### 6. My Info Module
 
@@ -101,6 +111,8 @@ TC_INFO_009: Add custom fields if supported
 TC_INFO_010: Validate required field rules
 TC_INFO_011: Save profile without making changes
 TC_INFO_012: Verify updated values are retained after save
+TC_INFO_013 [Negative]: Enter an invalid email address in contact details; verify validation is shown and the invalid value is not saved
+TC_INFO_014 [Negative]: Enter an invalid phone number format in contact details; verify the field is rejected or a clear validation message is displayed
 
 ### 7. Performance Module
 
@@ -114,6 +126,8 @@ TC_PERF_007: Search employee review history
 TC_PERF_008: Validate empty review submission
 TC_PERF_009: Verify review status workflow
 TC_PERF_010: Validate date and rating fields
+TC_PERF_011 [Negative]: Submit a performance review without its required rating or feedback; verify submission is blocked and required fields are identified
+TC_PERF_012 [Negative]: Enter a rating outside the configured scale; verify the value is rejected and the review is not saved
 
 ### 8. Dashboard Module
 
@@ -127,6 +141,8 @@ TC_DASH_007: Check dashboard layout for responsiveness
 TC_DASH_008: Verify navigation links are visible
 TC_DASH_009: Validate buzz latest posts panel
 TC_DASH_010: Verify quick access actions open correct pages
+TC_DASH_011 [Negative]: Load the dashboard when a widget has no data; verify an empty state is shown without breaking the rest of the dashboard
+TC_DASH_012 [Negative]: Simulate a failed or unavailable dashboard widget response; verify an error/empty state is shown and other dashboard widgets remain usable
 
 ### 9. Directory Module
 
@@ -138,6 +154,8 @@ TC_DIR_005: View employee contact details
 TC_DIR_006: Validate empty search result handling
 TC_DIR_007: Verify employee directory pagination if available
 TC_DIR_008: Check sorting functionality for employee list
+TC_DIR_009 [Negative]: Search for a name that does not match any employee; verify no unrelated employee is displayed and a no-results state is shown
+TC_DIR_010 [Negative]: Apply department and job-title filters that have no matching employees; verify the result list remains empty and filters can be cleared
 
 ### 10. Maintenance Module
 
@@ -147,6 +165,8 @@ TC_MAINT_003: Validate password confirmation for maintenance mode
 TC_MAINT_004: Verify maintenance actions are accessible only to authorized users
 TC_MAINT_005: Validate invalid password handling
 TC_MAINT_006: Confirm page reset or cleanup options work as expected
+TC_MAINT_007 [Negative]: Enter an incorrect password when confirming maintenance access; verify access is denied and protected data/actions remain unavailable
+TC_MAINT_008 [Negative]: Attempt to open a maintenance action without the required authorization; verify the action is blocked and no data is changed
 
 ### 11. Claim Module
 
@@ -160,6 +180,8 @@ TC_CLAIM_007: Reject claim request
 TC_CLAIM_008: Validate reimbursement summary
 TC_CLAIM_009: View claim history
 TC_CLAIM_010: Check claim status workflow
+TC_CLAIM_011 [Negative]: Add an expense with a zero or negative amount; verify the amount is rejected and the claim cannot be submitted
+TC_CLAIM_012 [Negative]: Submit a claim with required claim or expense details missing; verify submission is blocked and missing fields are identified
 
 ### 12. Buzz Module
 
@@ -173,6 +195,8 @@ TC_BUZZ_007: Verify posts appear in feed chronology
 TC_BUZZ_008: Validate user profile image on posts
 TC_BUZZ_009: Check feed refresh after creating a post
 TC_BUZZ_010: Validate multi-user interaction scenarios
+TC_BUZZ_011 [Negative]: Submit a post containing only whitespace; verify the post is not created and the feed remains unchanged
+TC_BUZZ_012 [Negative]: Upload an unsupported or oversized attachment to a post; verify the attachment is rejected and no invalid post is published
 
 ## Notes
 - These are candidate manual/automation test cases based on the OrangeHRM demo portal exploration.
