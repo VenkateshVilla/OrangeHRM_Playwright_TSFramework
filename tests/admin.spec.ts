@@ -10,29 +10,45 @@ const {
 test.describe('Admin Module', () => {
 
     test.beforeEach(async ({ adminPage }) => {
-        await adminPage.openAdminPage();
-        await adminPage.verifyAdminPageLoaded();
+        await test.step('Open Admin page and verify it loaded', async () => {
+            await adminPage.openAdminPage();
+            await adminPage.verifyAdminPageLoaded();
+        });
     });
 
     test('Search User', async ({ adminPage }) => {
-        await adminPage.searchUser(searchUser.username);
-        await adminPage.verifySearchResultsContainUser(searchUser.username);
+        await test.step('Search for the user', async () => {
+            await adminPage.searchUser(searchUser.username);
+        });
+
+        await test.step('Verify search results contain the user', async () => {
+            await adminPage.verifySearchResultsContainUser(searchUser.username);
+        });
     });
 
     test('Search User with no matching result', async ({ adminPage }) => {
         const missingUsername = 'definitely_not_a_user_12345';
 
-        await adminPage.searchUser(missingUsername);
-        await adminPage.verifyNoSearchResultsDisplayed();
+        await test.step('Search for a username that should not exist', async () => {
+            await adminPage.searchUser(missingUsername);
+        });
+
+        await test.step('Verify no matching user is displayed', async () => {
+            await adminPage.verifyNoSearchResultsDisplayed();
+        });
     });
 
     test('Create Admin User', async ({ adminPage }) => {
-        await adminPage.createAdminUser(
-            newUser.userRole,
-            newUser.employeeName
-        );
+        await test.step('Create the admin user', async () => {
+            await adminPage.createAdminUser(
+                newUser.userRole,
+                newUser.employeeName
+            );
+        });
 
-        await adminPage.verifyUserCreated(newUser.employeeName);
-        await expect(adminPage.addButton).toBeVisible();
+        await test.step('Verify the created user is visible', async () => {
+            await adminPage.verifyUserCreated(newUser.employeeName);
+            await expect(adminPage.addButton).toBeVisible();
+        });
     });
 });
