@@ -81,6 +81,9 @@ Run one spec file:
 npx playwright test tests/login.spec.ts
 ```
 
+Each Playwright run clears the previous `allure-results` before tests start, so
+the Allure report contains results from that run only.
+
 ## GitHub Actions
 
 The `Admin Playwright Tests` workflow runs `tests/admin.spec.ts` on a
@@ -103,9 +106,10 @@ retained for 14 days.
 
 - Download and extract `playwright-html-report`, then open
   `playwright-report/index.html` in a browser.
-- To regenerate the Allure report locally, create an `allure-results` folder
-  in the repository root and extract the contents of the `allure-results`
-  artifact into it. Confirm it contains `*-result.json` files, then run:
+- To regenerate the Allure report locally from a downloaded artifact, extract
+  the contents of the `allure-results` artifact into the repository root so it
+  replaces any existing `allure-results` folder. Confirm it contains
+  `*-result.json` files, then run:
 
 ```bash
 npm run allure:generate

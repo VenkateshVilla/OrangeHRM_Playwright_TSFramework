@@ -6,6 +6,8 @@ export default defineConfig({
 
     fullyParallel: true,
 
+    globalSetup: './global-setup.ts',
+
     reporter: [
         ['html'],
         ['allure-playwright']
