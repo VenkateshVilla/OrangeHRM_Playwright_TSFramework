@@ -63,4 +63,13 @@ export class EnvManager {
     static getEnvironment(): string {
         return this.get('ENV');
     }
+
+    static getApiBaseUrl(): string {
+    return this.get('API_BASE_URL');
+    }
+
+    static getApiKey(): string {
+    return this.get('API_KEY');
+    }
+    
 }
