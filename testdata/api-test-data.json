@@ -1,0 +1,21 @@
+{
+  "posts": {
+    "query": {
+      "userId": 1
+    },
+    "existingPostId": 1,
+    "newPost": {
+      "userId": 3,
+      "title": "Playwright API test post",
+      "body": "Created by the API automation suite."
+    },
+    "updatedPost": {
+      "userId": 1,
+      "title": "Updated by Playwright",
+      "body": "Updated with a PUT request from the API automation suite."
+    },
+    "patchedPost": {
+      "title": "Patched by Playwright"
+    }
+  }
+}

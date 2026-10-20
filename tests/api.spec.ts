@@ -1,39 +1,45 @@
 import{test,expect} from '@playwright/test';
 import { EnvManager } from '../src/utils/EnvManager';
 
-test('API test', async({request})=>{
+test('API test', async ({ request }) => {
+    const response = await test.step('Request post 1 from JSONPlaceholder', async () => {
+        return request.get('https://jsonplaceholder.typicode.com/posts/1');
+    });
 
-    await request.get('https://jsonplaceholder.typicode.com/posts/1').then(async(response)=>{
+    await test.step('Verify status and required post fields', async () => {
         expect(response.status()).toBe(200);
         const data = await response.json();
         expect(data).toHaveProperty('id', 1);
         expect(data).toHaveProperty('title');
         expect(data).toHaveProperty('body');
     });
-    
-})
+});
 
-test('API test 2  @positive', async({request})=>{
-    const response=await request.get('https://jsonplaceholder.typicode.com/posts/1');
-    expect(response.ok()).toBeTruthy();
-    
-    //interpolating the response status code into the assertion message for better debugging
-    console.log(`Response Status: ${response.status()}`);
+test('API test 2  @positive', async ({ request }) => {
+    const response = await test.step('Request post 1 from JSONPlaceholder', async () => {
+        return request.get('https://jsonplaceholder.typicode.com/posts/1');
+    });
 
-    expect(response.status()).toBe(200);
+    await test.step('Verify successful HTTP status', async () => {
+        expect(response.ok()).toBeTruthy();
+        console.log(`Response Status: ${response.status()}`);
+        expect(response.status()).toBe(200);
+    });
 
-    // Parsing the response body as JSON or deserializing it into a JavaScript object
-    const responseBody=await response.json();
+    const responseBody = await test.step('Parse post response body', async () => {
+        return response.json();
+    });
 
-    console.log('Response Body:', responseBody);
-
-    expect(responseBody.title).toBe(
-  'sunt aut facere repellat provident occaecati excepturi optio reprehenderit'
-    ); 
-    expect(responseBody).toHaveProperty('id', 1);
-    expect(responseBody).toHaveProperty('title');
-    expect(responseBody).toHaveProperty('body');
-})
+    await test.step('Verify post content and required fields', async () => {
+        console.log('Response Body:', responseBody);
+        expect(responseBody.title).toBe(
+            'sunt aut facere repellat provident occaecati excepturi optio reprehenderit'
+        );
+        expect(responseBody).toHaveProperty('id', 1);
+        expect(responseBody).toHaveProperty('title');
+        expect(responseBody).toHaveProperty('body');
+    });
+});
 
 test('OpenWeather current weather by city @positive', async ({ request }) => {
     const url = `${EnvManager.getApiBaseUrl()}/data/2.5/weather`;
@@ -48,7 +54,9 @@ test('OpenWeather current weather by city @positive', async ({ request }) => {
         });
     });
 
-    expect(response.status()).toBe(200);
+    await test.step('Verify weather response status', async () => {
+        expect(response.status()).toBe(200);
+    });
 
     const responseBody = await test.step('Parse the current weather response', async () => {
         return response.json();
@@ -76,18 +84,21 @@ test('OpenWeather current weather by coordinates @positive', async ({ request })
         });
     });
 
-    expect(response.status()).toBe(200);
-
-    const responseBody = await test.step('Parse and verify the coordinate-based weather response', async () => {
-        const body = await response.json();
-        expect(body).toHaveProperty('main.temp');
-        expect(body).toHaveProperty('coord.lat');
-        expect(body).toHaveProperty('coord.lon');
-        expect(Array.isArray(body.weather)).toBe(true);
-        return body;
+    await test.step('Verify weather response status', async () => {
+        expect(response.status()).toBe(200);
     });
 
-    expect(responseBody.weather.length).toBeGreaterThan(0);
+    const responseBody = await test.step('Parse and verify the coordinate-based weather response', async () => {
+        return response.json();
+    });
+
+    await test.step('Verify weather fields and forecast data', async () => {
+        expect(responseBody).toHaveProperty('main.temp');
+        expect(responseBody).toHaveProperty('coord.lat');
+        expect(responseBody).toHaveProperty('coord.lon');
+        expect(Array.isArray(responseBody.weather)).toBe(true);
+        expect(responseBody.weather.length).toBeGreaterThan(0);
+    });
 });
 
 test('ReqRes creates a user @positive', async ({ request }) => {
@@ -103,18 +114,22 @@ test('ReqRes creates a user @positive', async ({ request }) => {
         });
     });
 
-    expect(response.status()).toBe(201);
+    await test.step('Verify user creation status', async () => {
+        expect(response.status()).toBe(201);
+    });
 
     const responseBody = await test.step('Verify the created user response', async () => {
         return response.json();
     });
 
-    expect(responseBody).toMatchObject({
-        name: 'Venkatesh',
-        job: 'Automation specialist'
+    await test.step('Verify the created user details', async () => {
+        expect(responseBody).toMatchObject({
+            name: 'Venkatesh',
+            job: 'Automation specialist'
+        });
+        expect(responseBody.id).toBeTruthy();
+        expect(responseBody.createdAt).toBeTruthy();
     });
-    expect(responseBody.id).toBeTruthy();
-    expect(responseBody.createdAt).toBeTruthy();
 });
 
 test('ReqRes deletes a user @positive', async ({ request }) => {
@@ -145,23 +160,29 @@ test('ReqRes updates a user with PUT @positive', async ({ request }) => {
         });
     });
 
-    expect(response.status()).toBe(200);
+    await test.step('Verify user update status', async () => {
+        expect(response.status()).toBe(200);
+    });
 
     const responseBody = await test.step('Verify the updated user response', async () => {
         return response.json();
     });
 
-    expect(responseBody).toMatchObject({
-        name: 'Venkatesh',
-        job: 'Automation Engineer'
+    await test.step('Verify the updated user details', async () => {
+        expect(responseBody).toMatchObject({
+            name: 'Venkatesh',
+            job: 'Automation Engineer'
+        });
+        expect(responseBody.updatedAt).toBeTruthy();
     });
-    expect(responseBody.updatedAt).toBeTruthy();
 });
 
 test('GET authenticated GitHub user with bearer token', async ({ request }) => {
     const token = EnvManager.get('API_BEARER_TOKEN');
 
-    expect(token, 'API_BEARER_TOKEN must be set in env/.env.qa').toBeTruthy();
+    await test.step('Verify GitHub API token is configured', async () => {
+        expect(token, 'API_BEARER_TOKEN must be set in env/.env.qa').toBeTruthy();
+    });
 
     const response = await test.step('Request the authenticated GitHub user', async () => {
         return request.get('https://api.github.com/user', {
@@ -173,19 +194,25 @@ test('GET authenticated GitHub user with bearer token', async ({ request }) => {
         });
     });
 
-    expect(response.status()).toBe(200);
+    await test.step('Verify GitHub response status', async () => {
+        expect(response.status()).toBe(200);
+    });
 
-    const user = await response.json();
-    expect(user).toHaveProperty('id');
-    expect(user).toHaveProperty('login');
+    await test.step('Verify authenticated GitHub user fields', async () => {
+        const user = await response.json();
+        expect(user).toHaveProperty('id');
+        expect(user).toHaveProperty('login');
+    });
 });
 
-test.only('Search Spotify with OAuth 2.0 client credentials', async ({ request }) => {
+test('Search Spotify with OAuth 2.0 client credentials', async ({ request }) => {
     const clientId = EnvManager.get('SPOTIFY_CLIENT_ID');
     const clientSecret = EnvManager.get('SPOTIFY_CLIENT_SECRET');
 
-    expect(clientId, 'SPOTIFY_CLIENT_ID must be set').toBeTruthy();
-    expect(clientSecret, 'SPOTIFY_CLIENT_SECRET must be set').toBeTruthy();
+    await test.step('Verify Spotify client credentials are configured', async () => {
+        expect(clientId, 'SPOTIFY_CLIENT_ID must be set').toBeTruthy();
+        expect(clientSecret, 'SPOTIFY_CLIENT_SECRET must be set').toBeTruthy();
+    });
 
     const tokenResponse = await test.step('Request an OAuth access token', async () => {
         return request.post('https://accounts.spotify.com/api/token', {
@@ -199,10 +226,15 @@ test.only('Search Spotify with OAuth 2.0 client credentials', async ({ request }
         });
     });
 
-    expect(tokenResponse.status()).toBe(200);
+    await test.step('Verify OAuth token response status', async () => {
+        expect(tokenResponse.status()).toBe(200);
+    });
 
-    const tokenData = await tokenResponse.json();
-    expect(tokenData.access_token).toBeTruthy();
+    const tokenData = await test.step('Parse and verify OAuth access token', async () => {
+        const data = await tokenResponse.json();
+        expect(data.access_token).toBeTruthy();
+        return data;
+    });
 
     const apiResponse = await test.step('Search Spotify using the access token', async () => {
         return request.get('https://api.spotify.com/v1/search', {
@@ -217,10 +249,9 @@ test.only('Search Spotify with OAuth 2.0 client credentials', async ({ request }
         });
     });
 
-    expect(apiResponse.status()).toBe(200);
-
-    const searchData = await apiResponse.json();
-    expect(searchData.artists.items.length).toBeGreaterThan(0);
+    await test.step('Verify Spotify search status and artist results', async () => {
+        expect(apiResponse.status()).toBe(200);
+        const searchData = await apiResponse.json();
+        expect(searchData.artists.items.length).toBeGreaterThan(0);
+    });
 });
-
-

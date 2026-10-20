@@ -7,6 +7,8 @@ A TypeScript end-to-end test framework for OrangeHRM, built with Playwright Test
 - Page objects keep page locators and user workflows separate from test cases.
 - Shared Playwright fixtures provide typed page objects to tests.
 - `BasePage` contains reusable browser actions and assertions.
+- API service objects wrap Playwright `APIRequestContext` requests separately from API tests.
+- API tests cover GET, POST, PUT, PATCH, and DELETE requests with reusable test data, query parameters, status/header checks, and Ajv JSON Schema validation.
 - Tests run in parallel against the configured Chromium browser project.
 - HTML and Allure reporters collect test results.
 - Screenshots and videos are retained for failed tests; traces are recorded on retry.
@@ -16,6 +18,9 @@ A TypeScript end-to-end test framework for OrangeHRM, built with Playwright Test
 ```text
 .
 ├── src/
+│   ├── api/
+│   │   ├── PostsApi.ts          # APIRequestContext wrapper for posts endpoints
+│   │   └── postSchemas.ts       # Reusable API response JSON Schemas
 │   ├── fixtures/
 │   │   └── baseFixture.ts       # Shared page-object fixtures and expect
 │   ├── pages/
@@ -29,8 +34,10 @@ A TypeScript end-to-end test framework for OrangeHRM, built with Playwright Test
 │       ├── CryptoUtil.ts        # Base64 encode/decode helpers
 │       └── EnvManager.ts        # Environment variable access
 ├── testdata/
+│   ├── api-test-data.json       # API request payloads and query parameters
 │   └── testdata.json            # Example login and employee data
 ├── tests/
+│   ├── apiCrud.spec.ts          # CRUD API tests using the Posts API service object
 │   ├── admin.spec.ts            # Admin module tests
 │   ├── dashboard.spec.ts        # Dashboard tests
 │   ├── login.spec.ts            # Login tests
@@ -80,6 +87,17 @@ Run one spec file:
 ```bash
 npx playwright test tests/login.spec.ts
 ```
+
+Run the API CRUD tests:
+
+```bash
+npx playwright test tests/apiCrud.spec.ts
+```
+
+See [API_TESTS.md](API_TESTS.md) for a brief description of each API test and its supporting files.
+
+The API CRUD examples use JSONPlaceholder by default. An explicit
+`API_POSTS_BASE_URL` example is included in [API_TESTS.md](API_TESTS.md).
 
 Each Playwright run clears the previous `allure-results` before tests start, so
 the Allure report contains results from that run only.
